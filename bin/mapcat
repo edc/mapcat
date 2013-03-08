@@ -5,6 +5,7 @@
 
 var cat = require("../lib").cat;
 var optimist = require("optimist");
+var sys = require("sys");
 
 var ARGS = optimist
     .usage("$0 input1.map [input2.map ...] [options]\n")
@@ -22,7 +23,7 @@ var outMapFile = ARGS.mapout || 'out.map';
 var outJSFile = ARGS.outjs || 'out.js';
 
 if (! inputMapFiles.length) {
-    console.error("nothing to do");
+    sys.puts(optimist.help());
     process.exit(0);
 }
 
