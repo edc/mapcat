@@ -1,0 +1,29 @@
+#! /usr/bin/env node
+// -*- js -*-
+
+"use strict";
+
+var cat = require("../lib").cat;
+var optimist = require("optimist");
+
+var ARGS = optimist
+    .usage("$0 input1.map [input2.map ...] [options]\n")
+    .describe("jsout", "Specify an output JS file (default ./out.js)")
+        .alias("j", "jsout")
+        .string("jsout")
+    .describe("mapout", "Specify an output map file (default ./map.js)")
+        .alias("m", "mapout")
+        .string("mapout")
+    .wrap(80)
+    .argv;
+
+var inputMapFiles = ARGS._ || [];
+var outMapFile = ARGS.mapout || 'out.map';
+var outJSFile = ARGS.outjs || 'out.js';
+
+if (! inputMapFiles.length) {
+    console.error("nothing to do");
+    process.exit(0);
+}
+
+cat(inputMapFiles, outJSFile, outMapFile);
