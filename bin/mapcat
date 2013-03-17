@@ -20,7 +20,7 @@ var ARGS = optimist
 
 var inputMapFiles = ARGS._ || [];
 var outMapFile = ARGS.mapout || 'out.map';
-var outJSFile = ARGS.outjs || 'out.js';
+var outJSFile = ARGS.jsout || 'out.js';
 
 if (! inputMapFiles.length) {
     sys.puts(optimist.help());
