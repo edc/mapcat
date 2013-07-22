@@ -14,7 +14,7 @@ exports.cat = (inputMapFiles, outJSFile, outMapFile) ->
         # concatenate the file
         srcPath = path.join(path.dirname(f), map.file)
         src = readFileSync(srcPath, 'utf-8')
-        src = src.replace(/\/\/@\ssourceMappingURL[^\r\n]*/g, '//')
+        src = src.replace(/\/\/[@#]\ssourceMappingURL[^\r\n]*/g, '//')
         buffer.push(src)
 
         # add all mappings in this file
@@ -33,7 +33,7 @@ exports.cat = (inputMapFiles, outJSFile, outMapFile) ->
         # update line offset so we could start working with the next file
         lineOffset += src.split('\n').length
 
-    buffer.push "//@ sourceMappingURL=#{path.relative(path.dirname(outJSFile), outMapFile)}"
+    buffer.push "//# sourceMappingURL=#{path.relative(path.dirname(outJSFile), outMapFile)}"
 
     writeFileSync(outJSFile, buffer.join('\n'), 'utf-8')
     writeFileSync(outMapFile, generator.toString(), 'utf-8')
