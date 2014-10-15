@@ -2,7 +2,7 @@
 path = require('path')
 {SourceMapConsumer, SourceMapGenerator} = require('source-map')
 
-exports.cat = (inputMapFiles, outJSFile, outMapFile) ->
+exports.cat = (inputMapFiles, outJSFile, outMapFile, maproot) ->
     buffer = []
     generator = new SourceMapGenerator
         file: outJSFile
@@ -33,7 +33,10 @@ exports.cat = (inputMapFiles, outJSFile, outMapFile) ->
         # update line offset so we could start working with the next file
         lineOffset += src.split('\n').length
 
-    buffer.push "//# sourceMappingURL=#{path.relative(path.dirname(outJSFile), outMapFile)}"
+    if maproot == null
+        buffer.push "//# sourceMappingURL=#{path.relative(path.dirname(outJSFile), outMapFile)}"
+    else
+        buffer.push "//# sourceMappingURL=#{maproot + path.relative(path.dirname(outJSFile), outMapFile)}"
 
     writeFileSync(outJSFile, buffer.join('\n'), 'utf-8')
     writeFileSync(outMapFile, generator.toString(), 'utf-8')
