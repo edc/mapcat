@@ -15,16 +15,20 @@ var ARGS = optimist
     .describe("mapout", "Specify an output map file (default ./map.js)")
         .alias("m", "mapout")
         .string("mapout")
+	.describe("maproot", "Specify root path for map files (default empty)")
+		.alias("r", "maproot")
+		.string("maproot")
     .wrap(80)
     .argv;
 
 var inputMapFiles = ARGS._ || [];
 var outMapFile = ARGS.mapout || 'out.map';
 var outJSFile = ARGS.jsout || 'out.js';
+var maproot = ARGS.maproot || null;
 
 if (! inputMapFiles.length) {
     sys.puts(optimist.help());
     process.exit(0);
 }
 
-cat(inputMapFiles, outJSFile, outMapFile);
+cat(inputMapFiles, outJSFile, outMapFile, maproot);
