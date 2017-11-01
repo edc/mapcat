@@ -19,15 +19,15 @@ exports.cat = (inputMapFiles, outJSFile, outMapFile, maproot) ->
 
         # add all mappings in this file
         map.eachMapping (mapping) ->
-            origSrc = path.join(path.dirname(f), mapping.source)
+            origSrc = mapping.source and path.join(path.dirname(f), mapping.source)
             mapping =
                 generated:
                     line: mapping.generatedLine + lineOffset
                     column: mapping.generatedColumn
                 original:
-                    line: mapping.originalLine
-                    column: mapping.originalColumn
-                source: path.relative(path.dirname(outMapFile), origSrc)
+                    line: mapping.originalLine or "1"
+                    column: mapping.originalColumn or "1"
+                source: if origSrc then path.relative(path.dirname(outMapFile), origSrc) else 'unknown:/'
             generator.addMapping mapping
 
         # update line offset so we could start working with the next file
